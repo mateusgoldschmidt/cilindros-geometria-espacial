@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cilindros - Geometria Espacial no Ensino Médio</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <style>
+    :root {
+      --primary-text: #1a202c;
+      --secondary-text: #4a5568;
+      --accent-yellow: #ecc94b;
+      --card-bg: #ffffff;
+      --bg-color: #f7fafc;
+      --border-color: #e2e8f0;
+      --primary-color: #2b6cb0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--primary-text);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    header { margin-bottom: 40px; }
+    h1 { font-size: 2.5rem; font-weight: 800; color: #1a202c; margin-bottom: 10px; line-height: 1.2; }
+    .subtitle { font-size: 1.25rem; color: var(--secondary-text); margin-bottom: 25px; }
+    .divider { width: 80px; height: 4px; background-color: var(--accent-yellow); margin-bottom: 25px; }
+    .author-info { font-size: 1rem; color: var(--secondary-text); line-height: 1.5; }
+    .author-info strong { color: var(--primary-color); font-size: 1.1rem; display: block; margin-bottom: 4px; }
+    .year { text-align: right; font-weight: 600; color: var(--secondary-text); margin-top: -24px; }
+    .student-info { background-color: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; border-left: 6px solid var(--accent-yellow); }
+    .student-info label { font-weight: bold; display: block; margin-bottom: 8px; color: var(--primary-color); }
+    .student-info input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+    .student-info input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(43,108,176,0.2); }
+    .geogebra-container { width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 40px; background-color: var(--card-bg); touch-action: pan-y; }
+    .question-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .question-card h3 { margin-top: 0; color: var(--primary-color); font-size: 1.2rem; margin-bottom: 15px; }
+    .action-text { background-color: #edf2f7; padding: 10px 15px; border-left: 4px solid #4a5568; border-radius: 4px; margin-bottom: 15px; font-size: 0.95rem; }
+    .action-text strong { color: #2d3748; }
+    .challenge-text { font-size: 1rem; margin-bottom: 15px; }
+    textarea { width: 100%; height: 100px; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit; resize: vertical; box-sizing: border-box; }
+    textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(43,108,176,0.2); }
+    .actions-container { text-align: center; margin-top: 40px; padding: 30px; background: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .btn { padding: 14px 28px; font-size: 1.1rem; font-weight: bold; color: white; background-color: var(--primary-color); border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+    .btn:hover { background-color: #1a365d; }
+    .btn:disabled { background-color: #a0aec0; cursor: not-allowed; }
+    @media (max-width: 768px) {
+      .geogebra-container iframe { height: 400px; }
+      h1 { font-size: 2rem; }
+      .year { text-align: left; margin-top: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Cilindros &mdash; Geometria Espacial no Ensino Médio</h1>
+      <div class="subtitle">Conceitos e aplicações práticas</div>
+      <div class="divider"></div>
+      <div class="author-info">
+        <strong>Mateus Goldschmidt</strong>
+        Curso de Licenciatura em Matemática - UFFS<br>
+        Disciplina de Geometria Espacial
+      </div>
+      <div class="year">2026</div>
+    </header>
+
+    <div class="student-info">
+      <label for="student-name">Identificação do Aluno</label>
+      <input type="text" id="student-name" placeholder="Digite seu nome completo">
+    </div>
+
+    <div class="geogebra-container" id="ggb-container">
+      <div id="ggb-applet"></div>
+    </div>
+
+    <h2 style="margin-bottom: 24px; color: #1a202c;">Roteiro de Investigação</h2>
+
+    <div class="question-card">
+      <h3>1. A Deformação da Lateral</h3>
+      <div class="action-text">
+        <strong>Ação:</strong> Com a planificação aberta (prog = 1), mova o controle da inclinação para a direita e para a esquerda, sem alterar a altura ou o raio.
+      </div>
+      <div class="challenge-text">
+        Observe as linhas <em>h</em> no retângulo e <em>g</em> no paralelogramo. Ao aumentar a inclinação, qual dessas linhas visualmente percorre o caminho mais longo? Como o estiramento dessa linha justifica o aumento da Área Lateral do cilindro oblíquo, mesmo que a altura vertical <em>h</em> não tenha mudado?
+      </div>
+      <textarea id="ans1" placeholder="Escreva sua observação aqui..."></textarea>
+    </div>
+
+    <div class="question-card">
+      <h3>2. O Segredo da Base</h3>
+      <div class="action-text">
+        <strong>Ação:</strong> Mantenha a planificação aberta (prog = 1) e foque na medida inferior das superfícies (largura = 2πr). Altere a inclinação e, depois, altere apenas o raio r.
+      </div>
+      <div class="challenge-text">
+        Qual desses dois controles é o único capaz de modificar a largura esticada das planificações? Usando a lógica visual, por que "entortar" o cilindro não altera o tamanho do círculo que forma a base dele?
+      </div>
+      <textarea id="ans2" placeholder="Escreva sua observação aqui..."></textarea>
+    </div>
+
+    <div class="question-card">
+      <h3>3. A Conclusão Visual</h3>
+      <div class="action-text">
+        <strong>Ação:</strong> Volte a figura para a forma de sólido 3D (prog = 0) e reduza a inclinação até o zero absoluto.
+      </div>
+      <div class="challenge-text">
+        O que acontece visualmente com o cilindro da esquerda (oblíquo) quando ele perde totalmente a sua inclinação e as duas figuras se comparam lado a lado? O que essa constatação nos ensina sobre a verdadeira diferença entre um cilindro reto e um oblíquo?
+      </div>
+      <textarea id="ans3" placeholder="Escreva sua observação aqui..."></textarea>
+    </div>
+
+    <div class="actions-container">
+      <p style="margin-top:0; margin-bottom: 15px; color: var(--secondary-text)">Ao concluir as observações, clique no botão para registrar suas respostas.</p>
+      <button id="btn-enviar" class="btn" onclick="enviarParaDrive()">Enviar Respostas para o Professor</button>
+    </div>
+  </div>
+
+  <script>
+    function enviarParaDrive() {
+      const nome = document.getElementById('student-name').value.trim();
+      if (!nome) {
+        alert('Por favor, preencha o seu nome no campo de identificação antes de enviar.');
+        document.getElementById('student-name').focus();
+        return;
+      }
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyuP61kMQlfH96gO-WauWnEZjqmIeEMm8nRoyrINJvCVqHY3QVgetCw9DgfOuKVts0HLA/exec';
+      const payload = {
+        nome: nome,
+        ans1: document.getElementById('ans1').value,
+        ans2: document.getElementById('ans2').value,
+        ans3: document.getElementById('ans3').value
+      };
+      const btn = document.getElementById('btn-enviar');
+      btn.innerText = 'Enviando relatório...';
+      btn.disabled = true;
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        cache: 'no-cache',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        alert('Sucesso! Suas observações foram registradas na planilha do professor.');
+        btn.innerText = 'Observações Enviadas!';
+      })
+      .catch(error => {
+        console.error('Erro', error);
+        alert('Erro de conexão. Tente novamente.');
+        btn.disabled = false;
+        btn.innerText = 'Tentar Enviar Novamente';
+      });
+    }
+
+    var parameters = {
+      id: 'ggbApplet',
+      width: 900,
+      height: 600,
+      showMenuBar: false,
+      showAlgebraInput: false,
+      showToolBar: false,
+      customToolBar: '0',
+      showResetIcon: true,
+      enableLabelDrags: false,
+      enableShiftDragZoom: true,
+      enableRightClick: false,
+      useBrowserForJS: false,
+      material_id: 'xmsebxk2',
+      scaleContainerClass: 'geogebra-container',
+      allowUpscale: false
+    };
+    var applet = new GGBApplet(parameters, true);
+    window.onload = function() { applet.inject('ggb-applet'); };
+  </script>
+</body>
+</html>

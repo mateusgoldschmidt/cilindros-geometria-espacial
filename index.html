@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,6 +63,7 @@
         .control-group { margin-bottom: 10px; display: flex; flex-direction: column; }
         .control-group label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold; color: var(--secondary-text); margin-bottom: 3px; }
         input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--primary-color); }
+        .slider-rev { accent-color: #ecc94b !important; flex: 1; }
 
         .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .calc-col { background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #edf2f7; font-size: 0.8rem; }
@@ -88,6 +89,9 @@
         #labels-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
         .cota-label { position: absolute; font-family: 'Times New Roman', serif; font-size: 20px; font-weight: bold; color: white; transform: translate(-50%, -50%); text-shadow: 1px 1px 3px #000, 0 0 5px rgba(0,0,0,0.5); white-space: nowrap; }
 
+        .btn-animar { background: #ecc94b; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; color: #2d3748; transition: 0.2s; min-width: 80px; text-align: center; }
+        .btn-animar:hover { opacity: 0.9; }
+
         @media (max-width: 850px) { .dashboard-row { flex-direction: column; } }
     </style>
 </head>
@@ -106,7 +110,7 @@
 
     <div class="student-info">
         <label for="student-name">Identificação do Aluno:</label>
-        <input type="text" id="student-name" placeholder="Digite seu nome completo">
+        <input type="text" id="student-name" placeholder="Digite o seu nome completo">
     </div>
 
     <!-- LABORATORIO 3D -->
@@ -136,7 +140,18 @@
                 <label>Inclinação (θ): <span id="ui-ang" style="color: var(--color-obliquo)">30°</span></label>
                 <input type="range" id="range-ang" min="0" max="45" value="30" step="1">
             </div>
-            <div class="control-group" style="background: #f1f5f9; padding: 10px; border-radius: 6px; margin-top: 5px;">
+
+            <div class="control-group" style="background: #fdf6e3; padding: 10px; border-radius: 6px; margin-top: 10px; border: 1px solid #f6e05e;">
+                <label style="color: #b7791f; display: flex; justify-content: space-between;">
+                    Revolução do Cilindro Reto: <span id="ui-rev">360°</span>
+                </label>
+                <div style="display: flex; gap: 10px; align-items: center; margin-top: 5px;">
+                    <input type="range" id="range-rev" class="slider-rev" min="0" max="360" value="360" step="1">
+                    <button id="btn-anim-rev" class="btn-animar">Animar</button>
+                </div>
+            </div>
+
+            <div class="control-group" style="background: #f1f5f9; padding: 10px; border-radius: 6px; margin-top: 10px;">
                 <label>Desenrolar Superfície: <span id="ui-prog">0%</span></label>
                 <input type="range" id="range-prog" min="0" max="100" value="0" step="0.5">
             </div>
@@ -164,7 +179,7 @@
                     </div>
                 </div>
             </div>
-            <p style="font-size: 0.7rem; color: #718096; margin-top: 10px; font-style: italic;">Obs: O volume do oblíquo é calculado via h vertical (Cavalieri).</p>
+            <p style="font-size: 0.7rem; color: #718096; margin-top: 10px; font-style: italic;">Obs: O cilindro oblíquo não faz revolução (permanece sempre a 360°).</p>
         </div>
     </div>
 
@@ -175,36 +190,38 @@
         <h3>1. Invariância do Volume (Princípio de Cavalieri)</h3>
         <div class="action-box"><strong>Ação:</strong> Com os cilindros fechados (0%), altere apenas a <strong>Inclinação (θ)</strong>. Observe os dados numéricos de Volume (V).</div>
         <p>O que ocorre com o volume de ambos conforme a inclinação aumenta? Por que, mesmo o cilindro oblíquo parecendo "maior" visualmente, ele comporta a mesma quantidade de espaço interno que o reto?</p>
-        <textarea id="ans1" placeholder="Desenvolva sua resposta aqui..."></textarea>
+        <textarea id="ans1" placeholder="Desenvolva a sua resposta aqui..."></textarea>
     </div>
 
     <div class="question-card">
         <h3>2. O Gasto de Material (Área Lateral)</h3>
         <div class="action-box"><strong>Ação:</strong> Mantenha r e h fixos, e aumente a inclinação. Compare a <strong>Área Lateral</strong> nos dados numéricos.</div>
-        <p>A Área Lateral do oblíquo aumenta ou diminui com a inclinação? Relacione esse fenômeno com o tamanho da <strong>geratriz (g)</strong>. Se você fosse fabricar uma lata de refrigerante torta com o mesmo volume de uma reta, qual gastaria mais metal?</p>
-        <textarea id="ans2" placeholder="Desenvolva sua resposta aqui..."></textarea>
+        <p>A Área Lateral do oblíquo aumenta ou diminui com a inclinação? Relacione esse fenómeno com o tamanho da <strong>geratriz (g)</strong>. Se você fosse fabricar uma lata de refrigerante torta com o mesmo volume de uma reta, qual gastaria mais metal?</p>
+        <textarea id="ans2" placeholder="Desenvolva a sua resposta aqui..."></textarea>
     </div>
 
     <div class="question-card">
-        <h3>3. O Rótulo da Embalagem (Planificação)</h3>
-        <div class="action-box"><strong>Ação:</strong> Planifique totalmente as figuras (100%). Observe onde está posicionada a medida da circunferência (<strong>2πr</strong>) no cilindro oblíquo.</div>
-        <p>Se arrancarmos o rótulo de uma lata reta, ele forma um retângulo. Mas no cilindro oblíquo, a medida 2πr do "rótulo" acompanha uma curva ondulada. Por que essa borda precisa obrigatoriamente ser curva para conseguir montar um tubo inclinado?</p>
-        
-        <div style="font-size: 0.9rem; color: #2c5282; background-color: #ebf8ff; padding: 12px; border-radius: 6px; border-left: 4px solid #3182ce; margin-bottom: 15px;">
-            <strong>💡 Dica de Investigação:</strong> Volte o "Desenrolar Superfície" para 0% e gire a câmera para ver a figura de lado. Repare nas bases circulares (as "tampas"): elas ficam inclinadas ou continuam perfeitamente paralelas ao chão horizontal? Se você montasse esse cano torto usando uma folha de papel de <em>bordas retas</em>, as tampas ficariam alinhadas com o chão?
-        </div>
-        
-        <textarea id="ans3" placeholder="Desenvolva sua resposta usando a dica da observação 3D..."></textarea>
+        <h3>3. O Enigma do Pneu (Planificação)</h3>
+        <div class="action-box"><strong>Ação:</strong> Planifique os cilindros (100%). Observe onde o rótulo <strong>2πr</strong> está posicionado no cilindro oblíquo.</div>
+        <p>Por que a medida da circunferência (2πr) no oblíquo está localizada na <strong>curva</strong> e não na reta horizontal? Se "desenrolássemos" a base circular no papel, o rasto deixado por ela seria reto ou ondulado?</p>
+        <textarea id="ans3" placeholder="Desenvolva a sua resposta aqui..."></textarea>
     </div>
 
     <div class="question-card">
         <h3>4. Otimização de Embalagens (Cilindro Equilátero)</h3>
-        <div class="action-box"><strong>Ação:</strong> Fixe a inclinação em 0°. Imagine que você projeta latas e precisa guardar cerca de <strong>1000 u³ de Volume</strong>. Manipule o Raio (r) e a Altura (h) até chegar próximo a esse volume e observe o valor da <strong>Área Total</strong>.</div>
+        <div class="action-box"><strong>Ação:</strong> Fixe a inclinação em 0°. Imagine que projeta latas e precisa guardar cerca de <strong>1000 u³ de Volume</strong>. Manipule o Raio (r) e a Altura (h) até chegar próximo a esse volume e observe o valor da <strong>Área Total</strong>.</div>
         <p>A indústria quer economizar metal. Tente encontrar a <em>menor</em> Área Total possível que ainda comporte os ~1000 u³ (ajuste o raio e a altura em conjunto). Ao encontrar a configuração mais económica, compare o valor da Altura (h) com o do Raio (r). Qual é a relação matemática ideal entre eles para otimizar o custo?</p>
-        <textarea id="ans4" placeholder="Desenvolva sua resposta aqui..."></textarea>
+        <textarea id="ans4" placeholder="Desenvolva a sua resposta aqui..."></textarea>
     </div>
 
-    <button id="btn-enviar" class="btn-enviar" onclick="enviarDados()">Registrar Minhas Observações</button>
+    <div class="question-card">
+        <h3>5. O Sólido de Revolução (Cilindro Reto)</h3>
+        <div class="action-box"><strong>Ação:</strong> Clique no botão <strong>Animar</strong> na barra de Revolução e observe a figura amarela translúcida que "varre" o espaço.</div>
+        <p>O cilindro reto é considerado um "sólido de revolução"? Qual é o nome do polígono amarelo que está a girar no espaço para formar o cilindro? Explique quais os lados desse polígono que formam a <strong>altura</strong>, o <strong>raio da base</strong> e a <strong>superfície lateral</strong> do cilindro construído.</p>
+        <textarea id="ans5" placeholder="Desenvolva a sua resposta aqui..."></textarea>
+    </div>
+
+    <button id="btn-enviar" class="btn-enviar" onclick="enviarDados()">Registar as Minhas Observações</button>
 
 </div>
 
@@ -242,10 +259,58 @@
     const groupReto = new THREE.Group(); groupReto.position.x = -65; scene.add(groupReto); groupReto.add(meshReto);
     const groupObl  = new THREE.Group(); groupObl.position.x = 65;   scene.add(groupObl);  groupObl.add(meshObl);
 
-    const circle = new THREE.CircleGeometry(1, 64);
-    function makeBase(c) { return new THREE.Mesh(circle, new THREE.MeshStandardMaterial({color: c, side: 2, roughness: 0.5})); }
-    const rt=makeBase(0x2b7bc4), rb=makeBase(0x2b7bc4), ot=makeBase(0xc43b3b), ob=makeBase(0xc43b3b);
+    // Bases dinâmicas
+    let rt = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshStandardMaterial({color: 0x2b7bc4, side: 2, roughness: 0.5}));
+    let rb = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshStandardMaterial({color: 0x2b7bc4, side: 2, roughness: 0.5}));
+    let ot = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshStandardMaterial({color: 0xc43b3b, side: 2, roughness: 0.5}));
+    let ob = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshStandardMaterial({color: 0xc43b3b, side: 2, roughness: 0.5}));
+    
     groupReto.add(rt, rb); groupObl.add(ot, ob);
+
+    // Retângulos de Revolução (Apenas Cilindro Reto)
+    const matRect = new THREE.MeshBasicMaterial({color: 0xffe600, side: THREE.DoubleSide, transparent: true, opacity: 0.5});
+    const rectGeoReto = new THREE.BufferGeometry();
+    const rectStartGeoReto = new THREE.BufferGeometry();
+    const rectReto = new THREE.Mesh(rectGeoReto, matRect);
+    const rectStartReto = new THREE.Mesh(rectStartGeoReto, matRect);
+    groupReto.add(rectReto); groupReto.add(rectStartReto);
+
+    // Controles de Animação e Interação
+    const rngRev = document.getElementById('range-rev');
+    const rngProg = document.getElementById('range-prog');
+    let isRevolvingAnim = false;
+    const btnAnim = document.getElementById('btn-anim-rev');
+
+    btnAnim.addEventListener('click', () => {
+        isRevolvingAnim = !isRevolvingAnim;
+        if (isRevolvingAnim) {
+            btnAnim.innerText = 'Pausar';
+            btnAnim.style.background = '#f56565';
+            btnAnim.style.color = 'white';
+            rngProg.value = 0; 
+        } else {
+            btnAnim.innerText = 'Animar';
+            btnAnim.style.background = '#ecc94b';
+            btnAnim.style.color = '#2d3748';
+        }
+        update();
+    });
+
+    rngRev.addEventListener('input', () => { 
+        isRevolvingAnim = false; 
+        btnAnim.innerText = 'Animar';
+        btnAnim.style.background = '#ecc94b';
+        btnAnim.style.color = '#2d3748';
+        rngProg.value = 0; 
+    });
+    
+    rngProg.addEventListener('input', () => { 
+        isRevolvingAnim = false;
+        btnAnim.innerText = 'Animar';
+        btnAnim.style.background = '#ecc94b';
+        btnAnim.style.color = '#2d3748';
+        rngRev.value = 360; 
+    });
 
     // --- COTAS ---
     const labelsDiv = document.getElementById('labels-container');
@@ -275,28 +340,46 @@
             scene.add(this.line); cotas.push(this);
         }
         upd(pts, midPt, txt, op) {
-            this.p1 = midPt; this.p2 = midPt; // Necessário para a centralização da animação
+            this.p1 = midPt; this.p2 = midPt;
             this.el.innerHTML = txt; this.el.style.opacity=op; this.line.material.opacity=op;
             this.line.geometry.setFromPoints(pts);
             this.line.computeLineDistances();
         }
     }
 
-    const cRetoH = new Label('h_r', '#99ccff'), cRetoPeri = new Label('p_r', '#99ccff');
-    const cOblG = new Label('g_o', '#ff9999'), cOblH = new Label('h_o', '#ffff00'), cOblPeri = new Label('p_o', '#ffaaaa');
+    const cRetoH = new Label('h_r', '#99ccff');
+    const cRetoPeri = new Label('p_r', '#99ccff');
+    const cOblG = new Label('g_o', '#ff9999');
+    const cOblH = new Label('h_o', '#ffff00');
+    const cOblPeri = new Label('p_o', '#ffaaaa');
     const cOblCurva = new LabelCurve('#ff9999');
 
     // --- LOGICA MATEMATICA ---
     let X_arr = new Float32Array(N + 1);
-    function getP(u_rat, v_rat, R, H, beta, prog, isObl, L_w) {
-        let p = prog/100, A = u_rat*Math.PI*2, g = isObl?H/Math.cos(beta):H, v = v_rat*g;
-        let x3 = isObl?(R*Math.cos(A)+v*Math.sin(beta)):R*Math.cos(A), y3 = isObl?(v*Math.cos(beta)-H/2):v-H/2, z3 = -R*Math.sin(A);
+    function getP(u_rat, v_rat, R, H, beta, prog, isObl, L_w, revRad) {
+        let p = prog/100;
+        let currentRev = isObl ? (Math.PI * 2) : revRad; 
+        let A = u_rat * currentRev; 
+        let g = isObl ? H/Math.cos(beta) : H;
+        let v = v_rat * g;
+        
+        let x3 = isObl ? (R*Math.cos(A) + v*Math.sin(beta)) : R*Math.cos(A);
+        let y3 = isObl ? (v*Math.cos(beta) - H/2) : v-H/2;
+        // Sentido da rotação coincidente com o cone: -R*sin(A)
+        let z3 = -R*Math.sin(A);
+        
         let x2, y2;
         if(isObl) {
-            let i = Math.floor(u_rat*N), fr = (u_rat*N)-i;
-            let xu = (i>=N)?X_arr[N]:X_arr[i]*(1-fr)+X_arr[i+1]*fr;
-            x2 = xu - L_w/2; y2 = v + R * Math.cos(A) * Math.sin(beta) - g/2;
-        } else { x2 = R*A - Math.PI*R; y2 = v - H/2; }
+            let u_rat_scaled = u_rat;
+            let i = Math.floor(u_rat_scaled*N), fr = (u_rat_scaled*N)-i;
+            let xu = (i>=N) ? X_arr[N] : X_arr[i]*(1-fr) + X_arr[i+1]*fr;
+            x2 = xu - L_w/2; 
+            y2 = v + R * Math.cos(A) * Math.sin(beta) - g/2;
+        } else { 
+            // Na planificação do cilindro reto centramos baseando-nos na largura atual desenrolada
+            x2 = R*A - (R * currentRev) / 2; 
+            y2 = v - H/2; 
+        }
         return new THREE.Vector3(x3*(1-p)+x2*p, y3*(1-p)+y2*p, z3*(1-p)+R*p);
     }
 
@@ -305,13 +388,16 @@
         const H = parseFloat(document.getElementById('range-h').value);
         const B = parseFloat(document.getElementById('range-ang').value)*Math.PI/180;
         const P = parseFloat(document.getElementById('range-prog').value);
+        const revDeg = parseFloat(rngRev.value);
+        const revRad = revDeg * Math.PI / 180;
         const p = P/100;
         
         document.getElementById('ui-r').innerText=R; document.getElementById('ui-h').innerText=H;
         document.getElementById('ui-ang').innerText=document.getElementById('range-ang').value+'°';
         document.getElementById('ui-prog').innerText=P+'%';
+        document.getElementById('ui-rev').innerText=Math.round(revDeg)+'°';
 
-        // Integral Elíptica
+        // Integral Elíptica do Oblíquo
         X_arr[0]=0; for(let i=1;i<=N;i++){
             let phi=(i-0.5)*(Math.PI*2/N);
             X_arr[i]=X_arr[i-1] + R*Math.sqrt(1-Math.pow(Math.sin(B)*Math.sin(phi),2))*(Math.PI*2/N);
@@ -322,13 +408,26 @@
         [meshReto, meshObl].forEach((m, idx)=>{
             const pos = m.geometry.attributes.position; const isO = idx===1;
             for(let i=0; i<pos.count; i++) {
-                let v = getP(origPos[i*3]+0.5, origPos[i*3+1]+0.5, R, H, isO?B:0, P, isO, isO?Lw:Lr);
+                let v = getP(origPos[i*3]+0.5, origPos[i*3+1]+0.5, R, H, isO?B:0, P, isO, Lw, revRad);
                 pos.setXYZ(i, v.x, v.y, v.z);
             }
             pos.needsUpdate=true; m.geometry.computeVertexNormals();
         });
 
-        // Bases
+        // Bases dinâmicas - Refeitas com base no grau de revolução
+        rt.geometry.dispose(); rb.geometry.dispose();
+        rt.geometry = new THREE.CircleGeometry(1, 64, 0, revRad);
+        // A base superior (rt) roda -PI/2, logo o seu eixo já inverte naturalmente
+        rb.geometry = new THREE.CircleGeometry(1, 64, 0, revRad);
+        rb.geometry.scale(1, -1, 1); // Inverte apenas a base inferior para compatibilizar o sentido
+
+        ot.geometry.dispose(); ob.geometry.dispose();
+        ot.geometry = new THREE.CircleGeometry(1, 64, 0, Math.PI * 2);
+        // A base superior (ot) também não precisa de ser invertida
+        ob.geometry = new THREE.CircleGeometry(1, 64, 0, Math.PI * 2);
+        ob.geometry.scale(1, -1, 1);
+
+        // Posicionamento das Bases
         function upB(mesh, top, isO, L_width) {
             let pos3d = new THREE.Vector3(isO ? (top?H*Math.tan(B):0) : 0, top?H/2:-H/2, 0);
             let p2d_x = isO ? (top ? -L_width/2 : 0) : 0;
@@ -339,32 +438,58 @@
             mesh.position.copy(pos3d).lerp(pos2d, p);
             let q3d = new THREE.Quaternion().setFromEuler(new THREE.Euler(top?-Math.PI/2:Math.PI/2, 0, 0));
             mesh.quaternion.copy(q3d).slerp(new THREE.Quaternion(), p);
-            mesh.scale.set(R, R, 1);
+            mesh.scale.set(R, R, 1); // Reaplica o raio
         }
         upB(rt,1,0,Lr); upB(rb,0,0,Lr); upB(ot,1,1,Lw); upB(ob,0,1,Lw);
 
-        // Painel
-        let Ab = Math.PI*R*R, V = Ab*H;
-        let Al_reto = Lr*H, At_reto = 2*Ab + Al_reto;
-        let Al_obl = Lw*g, At_obl = 2*Ab + Al_obl;
+        // Geometria da Revolução (Retângulo Gerador - SOMENTE CILINDRO RETO)
+        let isRevolving = (revDeg < 360 && p === 0);
+        rectReto.visible = rectStartReto.visible = isRevolving;
 
-        document.getElementById('val-reto-ab').innerText = Ab.toFixed(1);
+        if (isRevolving) {
+            let topC = new THREE.Vector3(0, H/2, 0);
+            let botC = new THREE.Vector3(0, -H/2, 0);
+            // Retângulo dinâmico seguindo o ângulo de rotação
+            let botR = new THREE.Vector3(R*Math.cos(revRad), -H/2, -R*Math.sin(revRad));
+            let topR = new THREE.Vector3(R*Math.cos(revRad), H/2, -R*Math.sin(revRad));
+            rectGeoReto.setFromPoints([topC, botC, botR, botR, topR, topC]);
+
+            // Retângulo fixo no ponto inicial (0°)
+            let botR0 = new THREE.Vector3(R, -H/2, 0);
+            let topR0 = new THREE.Vector3(R, H/2, 0);
+            rectStartGeoReto.setFromPoints([topC, botC, botR0, botR0, topR0, topC]);
+        }
+
+        // Painel - Cálculos ajustados pela Revolução
+        let ratio = revDeg / 360;
+        let Ab_reto = Math.PI*R*R * ratio;
+        let V_reto = Ab_reto * H;
+        let Al_reto = (Lr * H) * ratio;
+        let At_reto = 2 * Ab_reto + Al_reto;
+
+        let Ab_obl = Math.PI*R*R;
+        let V_obl = Ab_obl * H;
+        let Al_obl = Lw * g;
+        let At_obl = 2 * Ab_obl + Al_obl;
+
+        document.getElementById('val-reto-ab').innerText = Ab_reto.toFixed(1);
         document.getElementById('val-reto-al').innerText = Al_reto.toFixed(1);
         document.getElementById('val-reto-at').innerText = At_reto.toFixed(1);
-        document.getElementById('val-reto-v').innerText  = V.toFixed(1);
+        document.getElementById('val-reto-v').innerText  = V_reto.toFixed(1);
         
-        document.getElementById('val-obl-ab').innerText  = Ab.toFixed(1);
+        document.getElementById('val-obl-ab').innerText  = Ab_obl.toFixed(1);
         document.getElementById('val-obl-al').innerText  = Al_obl.toFixed(1);
         document.getElementById('val-obl-at').innerText  = At_obl.toFixed(1);
-        document.getElementById('val-obl-v').innerText   = V.toFixed(1);
+        document.getElementById('val-obl-v').innerText   = V_obl.toFixed(1);
 
         // Cotas
         scene.updateMatrixWorld(true);
+        let cotaOpacity = (isRevolvingAnim || isRevolving) ? 0 : 1;
         
         // Reto H
-        let pr1 = getP(0,0,R,H,0,P,0,Lr).add(groupReto.position).add(new THREE.Vector3(-8 - 5*p,0,0));
-        let pr2 = getP(0,1,R,H,0,P,0,Lr).add(groupReto.position).add(new THREE.Vector3(-8 - 5*p,0,0));
-        cRetoH.upd(pr1, pr2, `h = ${H}`, 1);
+        let pr1 = getP(0,0,R,H,0,P,0,Lr,revRad).add(groupReto.position).add(new THREE.Vector3(-8 - 5*p,0,0));
+        let pr2 = getP(0,1,R,H,0,P,0,Lr,revRad).add(groupReto.position).add(new THREE.Vector3(-8 - 5*p,0,0));
+        cRetoH.upd(pr1, pr2, `h = ${H}`, (1-p) * cotaOpacity);
 
         // Reto Peri
         let prp1 = new THREE.Vector3(-Lr/2, -H/2-25, R).add(groupReto.position);
@@ -372,43 +497,72 @@
         cRetoPeri.upd(prp1, prp2, `2&pi;r = ${Lr.toFixed(1)}`, p > 0.5 ? 1 : 0);
 
         // Oblíquo G
-        let po1 = getP(0,0,R,H,B,P,1,Lw).add(groupObl.position).add(new THREE.Vector3(-10 - 5*p,0,0));
-        let po2 = getP(0,1,R,H,B,P,1,Lw).add(groupObl.position).add(new THREE.Vector3(-10 - 5*p,0,0));
-        cOblG.upd(po1, po2, `g = ${g.toFixed(1)}`, 1);
+        let po1 = getP(0,0,R,H,B,P,1,Lw,revRad).add(groupObl.position).add(new THREE.Vector3(-10 - 5*p,0,0));
+        let po2 = getP(0,1,R,H,B,P,1,Lw,revRad).add(groupObl.position).add(new THREE.Vector3(-10 - 5*p,0,0));
+        cOblG.upd(po1, po2, `g = ${g.toFixed(1)}`, cotaOpacity);
 
-        // Oblíquo H (Fix de Deslocamento)
+        // Oblíquo H
         let po_h_offset = Math.max(35, R + H * Math.tan(B) + 15);
         let poh1 = new THREE.Vector3(po_h_offset, H/2, 0).applyMatrix4(groupObl.matrixWorld);
         let poh2 = new THREE.Vector3(po_h_offset, -H/2, 0).applyMatrix4(groupObl.matrixWorld);
-        cOblH.upd(poh1, poh2, `h = ${H}`, 1-p);
+        cOblH.upd(poh1, poh2, `h = ${H}`, (1-p) * cotaOpacity);
 
         // Oblíquo Curva 2πr
         const curvePts = [];
         for(let i=0; i<=50; i++) {
-            curvePts.push( getP(i/50, 0, R, H, B, P, 1, Lw).add(groupObl.position).add(new THREE.Vector3(0, -10, 0)) ); 
+            curvePts.push( getP(i/50, 0, R, H, B, P, 1, Lw, revRad).add(groupObl.position).add(new THREE.Vector3(0, -10, 0)) ); 
         }
         cOblCurva.upd(curvePts, curvePts[25], `Curva (2&pi;r) = ${Lr.toFixed(1)}`, p > 0.5 ? 1 : 0);
 
         // Oblíquo Peri (Largura Achatada)
-        let pop1 = getP(0,0.5,R,H,B,P,1,Lw).add(groupObl.position).add(new THREE.Vector3(0, 12, 0));
-        let pop2 = getP(1,0.5,R,H,B,P,1,Lw).add(groupObl.position).add(new THREE.Vector3(0, 12, 0));
+        let pop1 = getP(0,0.5,R,H,B,P,1,Lw,revRad).add(groupObl.position).add(new THREE.Vector3(0, 12, 0));
+        let pop2 = getP(1,0.5,R,H,B,P,1,Lw,revRad).add(groupObl.position).add(new THREE.Vector3(0, 12, 0));
         cOblPeri.upd(pop1, pop2, `Largura achatada = ${Lw.toFixed(1)}`, p > 0.8 ? 1 : 0);
     }
 
     function enviarDados() {
         const nome = document.getElementById('student-name').value.trim();
-        if(!nome) { alert('Identifique-se primeiro!'); return; }
+        if(!nome) { alert('Identifique-se preenchendo o seu nome completo!'); return; }
+        
         const btn = document.getElementById('btn-enviar');
-        btn.innerText = 'A enviar...'; btn.disabled = true;
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyuP61kMQlfH96gO-WauWnEZjqmIeEMm8nRoyrINJvCVqHY3QVgetCw9DgfOuKVts0HLA/exec';
-        const data = { nome: nome, ans1: document.getElementById('ans1').value, ans2: document.getElementById('ans2').value, ans3: document.getElementById('ans3').value, ans4: document.getElementById('ans4').value };
+        btn.innerText = 'A registar no Banco de Dados...'; btn.disabled = true;
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxs9yVPL1S0JiRI4yzQrDHniwdgmk35JytCRKgFAJTV-HSYSfUfwjhuaBmqO5ScjmYMng/exec';
+        const data = { 
+            atividade: 'Laboratório de Cilindros',
+            nome: nome, 
+            ans1: document.getElementById('ans1').value, 
+            ans2: document.getElementById('ans2').value, 
+            ans3: document.getElementById('ans3').value, 
+            ans4: document.getElementById('ans4').value,
+            ans5: document.getElementById('ans5').value // Agora capta a Questão 5!
+        };
+        
         fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
-        .then(() => { alert('Sucesso! Respostas registadas.'); btn.innerText = 'Enviado!'; })
-        .catch(() => { alert('Erro.'); btn.disabled = false; });
+        .then(() => { 
+            alert('Sucesso! As suas respostas foram enviadas para o professor.'); 
+            btn.innerText = 'Enviado com Sucesso!'; 
+        })
+        .catch(() => { 
+            alert('Erro na ligação. Tente Novamente.'); 
+            btn.disabled = false; 
+            btn.innerText = 'Tentar Novamente';
+        });
     }
 
     function animate() {
-        requestAnimationFrame(animate); controls.update();
+        requestAnimationFrame(animate); 
+        controls.update();
+
+        // Loop de Animação Contínua
+        if (isRevolvingAnim) {
+            let val = parseFloat(rngRev.value);
+            val += 2.5; 
+            if (val > 360) val = 0; 
+            rngRev.value = val;
+            update();
+        }
+
         cotas.forEach(c => {
             let mid = c.p1.clone().lerp(c.p2, 0.5); mid.project(camera);
             c.el.style.left = `${(mid.x*0.5+0.5)*container.clientWidth}px`;

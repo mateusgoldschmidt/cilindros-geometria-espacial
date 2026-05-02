@@ -1,182 +1,429 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cilindros - Geometria Espacial no Ensino Médio</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
-  <style>
-    :root {
-      --primary-text: #1a202c;
-      --secondary-text: #4a5568;
-      --accent-yellow: #ecc94b;
-      --card-bg: #ffffff;
-      --bg-color: #f7fafc;
-      --border-color: #e2e8f0;
-      --primary-color: #2b6cb0;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--primary-text);
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-    }
-    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-    header { margin-bottom: 40px; }
-    h1 { font-size: 2.5rem; font-weight: 800; color: #1a202c; margin-bottom: 10px; line-height: 1.2; }
-    .subtitle { font-size: 1.25rem; color: var(--secondary-text); margin-bottom: 25px; }
-    .divider { width: 80px; height: 4px; background-color: var(--accent-yellow); margin-bottom: 25px; }
-    .author-info { font-size: 1rem; color: var(--secondary-text); line-height: 1.5; }
-    .author-info strong { color: var(--primary-color); font-size: 1.1rem; display: block; margin-bottom: 4px; }
-    .year { text-align: right; font-weight: 600; color: var(--secondary-text); margin-top: -24px; }
-    .student-info { background-color: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; border-left: 6px solid var(--accent-yellow); }
-    .student-info label { font-weight: bold; display: block; margin-bottom: 8px; color: var(--primary-color); }
-    .student-info input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
-    .student-info input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(43,108,176,0.2); }
-    .geogebra-container { width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 40px; background-color: var(--card-bg); touch-action: pan-y; }
-    .question-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .question-card h3 { margin-top: 0; color: var(--primary-color); font-size: 1.2rem; margin-bottom: 15px; }
-    .action-text { background-color: #edf2f7; padding: 10px 15px; border-left: 4px solid #4a5568; border-radius: 4px; margin-bottom: 15px; font-size: 0.95rem; }
-    .action-text strong { color: #2d3748; }
-    .challenge-text { font-size: 1rem; margin-bottom: 15px; }
-    textarea { width: 100%; height: 100px; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit; resize: vertical; box-sizing: border-box; }
-    textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(43,108,176,0.2); }
-    .actions-container { text-align: center; margin-top: 40px; padding: 30px; background: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .btn { padding: 14px 28px; font-size: 1.1rem; font-weight: bold; color: white; background-color: var(--primary-color); border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
-    .btn:hover { background-color: #1a365d; }
-    .btn:disabled { background-color: #a0aec0; cursor: not-allowed; }
-    @media (max-width: 768px) {
-      .geogebra-container iframe { height: 400px; }
-      h1 { font-size: 2rem; }
-      .year { text-align: left; margin-top: 15px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cilindros - Geometria Espacial no Ensino Médio</title>
+    
+    <!-- Bibliotecas 3D e Matemática -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --primary-color: #2b6cb0;
+            --secondary-text: #4a5568;
+            --accent-yellow: #ecc94b;
+            --border-color: #e2e8f0;
+            --color-reto: #4da6ff;
+            --color-obliquo: #ff6666;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: #1a202c;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+
+        header { margin-bottom: 25px; text-align: center; }
+        h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 5px; color: #2d3748; }
+        .subtitle { font-size: 1.1rem; color: var(--secondary-text); margin-bottom: 10px; }
+        .divider { width: 100px; height: 4px; background-color: var(--accent-yellow); margin: 0 auto 15px; }
+
+        /* Estilo do Laboratório 3D */
+        #lab-container {
+            background-color: #121212;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        #canvas-3d { height: 480px; width: 100%; position: relative; }
+        
+        #gui-overlay {
+            position: absolute; top: 15px; left: 0; pointer-events: none;
+            display: flex; justify-content: space-around; width: 100%; z-index: 5;
+        }
+        #gui-overlay h2 { margin: 0; font-size: 18px; text-transform: uppercase; text-shadow: 0 2px 5px #000; }
+
+        /* Painel de Controles e Cálculos */
+        .dashboard-row { display: flex; gap: 15px; margin-bottom: 30px; }
+        .box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; flex: 1; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .box h3 { margin-top: 0; font-size: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px; color: #2d3748; }
+
+        .control-group { margin-bottom: 10px; display: flex; flex-direction: column; }
+        .control-group label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold; color: var(--secondary-text); margin-bottom: 3px; }
+        input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--primary-color); }
+
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .calc-col { background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #edf2f7; font-size: 0.8rem; }
+        .calc-col h4 { margin: 0 0 6px 0; text-align: center; font-size: 0.85rem; }
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 3px; border-bottom: 1px dashed #cbd5e0; }
+        .calc-val { font-weight: bold; font-family: monospace; font-size: 0.9rem; }
+
+        /* Estilo das Questões */
+        .student-info { background: var(--card-bg); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 6px solid var(--accent-yellow); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .student-info label { font-weight: bold; display: block; margin-bottom: 8px; color: var(--primary-color); }
+        .student-info input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+
+        .question-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .question-card h3 { margin-top: 0; color: var(--primary-color); font-size: 1.2rem; }
+        .action-box { background: #edf2f7; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9rem; border-left: 4px solid #4a5568; }
+        textarea { width: 100%; height: 110px; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; resize: vertical; box-sizing: border-box; font-family: inherit; }
+
+        .btn-enviar { display: block; width: 100%; padding: 18px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 20px; }
+        .btn-enviar:hover { background: #1a365d; }
+        .btn-enviar:disabled { background: #a0aec0; cursor: not-allowed; }
+
+        /* Camada de Cotas */
+        #labels-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+        .cota-label { position: absolute; font-family: 'Times New Roman', serif; font-size: 20px; font-weight: bold; color: white; transform: translate(-50%, -50%); text-shadow: 1px 1px 3px #000, 0 0 5px rgba(0,0,0,0.5); white-space: nowrap; }
+
+        @media (max-width: 850px) { .dashboard-row { flex-direction: column; } }
+    </style>
 </head>
 <body>
-  <div class="container">
+
+<div class="container">
     <header>
-      <h1>Cilindros &mdash; Geometria Espacial no Ensino Médio</h1>
-      <div class="subtitle">Planificação</div>
-      <div class="divider"></div>
-      <div class="author-info">
-        <strong>Mateus Goldschmidt</strong>
-        <strong>Karen Laís Vorpagel</strong>
-        Curso de Licenciatura em Matemática - UFFS<br>
-        Disciplina de Geometria Espacial
-      </div>
-      <div class="year">2026</div>
+        <h1>Cilindros: Reto vs Oblíquo</h1>
+        <div class="subtitle">Laboratório Virtual de Investigação Geométrica</div>
+        <div class="divider"></div>
+        <div style="font-size: 0.9rem; color: #718096;">
+            <strong>Autoria:</strong> Mateus Goldschmidt & Karen Laís Vorpagel<br>
+            UFFS - Licenciatura em Matemática | 2026
+        </div>
     </header>
 
     <div class="student-info">
-      <label for="student-name">Identificação do Aluno</label>
-      <input type="text" id="student-name" placeholder="Digite seu nome completo">
+        <label for="student-name">Identificação do Aluno:</label>
+        <input type="text" id="student-name" placeholder="Digite seu nome completo">
     </div>
 
-    <div class="geogebra-container" id="ggb-container">
-      <div id="ggb-applet"></div>
+    <!-- LABORATORIO 3D -->
+    <div id="lab-container">
+        <div id="canvas-3d">
+            <div id="gui-overlay">
+                <h2 style="color: var(--color-reto)">Cilindro Reto</h2>
+                <h2 style="color: var(--color-obliquo)">Cilindro Oblíquo</h2>
+            </div>
+            <div id="labels-container"></div>
+        </div>
     </div>
 
-    <h2 style="margin-bottom: 24px; color: #1a202c;">Roteiro de Investigação</h2>
+    <!-- PAINEL DE DADOS -->
+    <div class="dashboard-row">
+        <div class="box">
+            <h3>Parâmetros do Experimento</h3>
+            <div class="control-group">
+                <label>Raio da Base (r): <span id="ui-r" style="color: var(--primary-color)">10</span></label>
+                <input type="range" id="range-r" min="5" max="15" value="10" step="0.5">
+            </div>
+            <div class="control-group">
+                <label>Altura Vertical (h): <span id="ui-h" style="color: var(--primary-color)">30</span></label>
+                <input type="range" id="range-h" min="15" max="45" value="30" step="1">
+            </div>
+            <div class="control-group">
+                <label>Inclinação (θ): <span id="ui-ang" style="color: var(--color-obliquo)">30°</span></label>
+                <input type="range" id="range-ang" min="0" max="45" value="30" step="1">
+            </div>
+            <div class="control-group" style="background: #f1f5f9; padding: 10px; border-radius: 6px; margin-top: 5px;">
+                <label>Desenrolar Superfície: <span id="ui-prog">0%</span></label>
+                <input type="range" id="range-prog" min="0" max="100" value="0" step="0.5">
+            </div>
+        </div>
+
+        <div class="box">
+            <h3>Dados Numéricos Comparativos</h3>
+            <div class="calc-grid">
+                <div class="calc-col" style="border-top: 4px solid var(--color-reto)">
+                    <h4>Cilindro Reto</h4>
+                    <div class="calc-row"><span>Área Base</span> <span id="val-reto-ab" class="calc-val">-</span></div>
+                    <div class="calc-row"><span>Área Lateral</span> <span id="val-reto-al" class="calc-val">-</span></div>
+                    <div class="calc-row"><span>Área Total</span> <span id="val-reto-at" class="calc-val">-</span></div>
+                    <div class="calc-row" style="border-top: 1px solid #cbd5e0; margin-top: 5px; padding-top: 5px;">
+                        <span>Volume (V)</span> <span id="val-reto-v" class="calc-val" style="color: var(--primary-color)">-</span>
+                    </div>
+                </div>
+                <div class="calc-col" style="border-top: 4px solid var(--color-obliquo)">
+                    <h4>Cilindro Oblíquo</h4>
+                    <div class="calc-row"><span>Área Base</span> <span id="val-obl-ab" class="calc-val">-</span></div>
+                    <div class="calc-row"><span>Área Lateral</span> <span id="val-obl-al" class="calc-val">-</span></div>
+                    <div class="calc-row"><span>Área Total</span> <span id="val-obl-at" class="calc-val">-</span></div>
+                    <div class="calc-row" style="border-top: 1px solid #cbd5e0; margin-top: 5px; padding-top: 5px;">
+                        <span>Volume (V)</span> <span id="val-obl-v" class="calc-val" style="color: var(--primary-color)">-</span>
+                    </div>
+                </div>
+            </div>
+            <p style="font-size: 0.7rem; color: #718096; margin-top: 10px; font-style: italic;">Obs: O volume do oblíquo é calculado via h vertical (Cavalieri).</p>
+        </div>
+    </div>
+
+    <!-- QUESTÕES -->
+    <h2 style="color: #2d3748; margin-bottom: 20px;">Roteiro de Investigação</h2>
 
     <div class="question-card">
-      <h3>1. A Deformação da Lateral</h3>
-      <div class="action-text">
-        <strong>Ação:</strong> Com a planificação aberta (prog = 1), mova o controle da inclinação para a direita e para a esquerda, sem alterar a altura ou o raio.
-      </div>
-      <div class="challenge-text">
-        Observe as linhas <em>h</em> no retângulo e <em>g</em> no paralelogramo. Ao aumentar a inclinação, qual dessas linhas visualmente percorre o caminho mais longo? Como o estiramento dessa linha justifica o aumento da Área Lateral do cilindro oblíquo, mesmo que a altura vertical <em>h</em> não tenha mudado?
-      </div>
-      <textarea id="ans1" placeholder="Escreva sua observação aqui..."></textarea>
+        <h3>1. Invariância do Volume (Princípio de Cavalieri)</h3>
+        <div class="action-box"><strong>Ação:</strong> Com os cilindros fechados (0%), altere apenas a <strong>Inclinação (θ)</strong>. Observe os dados numéricos de Volume (V).</div>
+        <p>O que ocorre com o volume de ambos conforme a inclinação aumenta? Por que, mesmo o cilindro oblíquo parecendo "maior" visualmente, ele comporta a mesma quantidade de espaço interno que o reto?</p>
+        <textarea id="ans1" placeholder="Desenvolva sua resposta aqui..."></textarea>
     </div>
 
     <div class="question-card">
-      <h3>2. O Segredo da Base</h3>
-      <div class="action-text">
-        <strong>Ação:</strong> Mantenha a planificação aberta (prog = 1) e foque na medida inferior das superfícies (largura = 2πr). Altere a inclinação e, depois, altere apenas o raio r.
-      </div>
-      <div class="challenge-text">
-        Qual desses dois controles é o único capaz de modificar a largura esticada das planificações? Usando a lógica visual, por que "entortar" o cilindro não altera o tamanho do círculo que forma a base dele?
-      </div>
-      <textarea id="ans2" placeholder="Escreva sua observação aqui..."></textarea>
+        <h3>2. O Gasto de Material (Área Lateral)</h3>
+        <div class="action-box"><strong>Ação:</strong> Mantenha r e h fixos, e aumente a inclinação. Compare a <strong>Área Lateral</strong> nos dados numéricos.</div>
+        <p>A Área Lateral do oblíquo aumenta ou diminui com a inclinação? Relacione esse fenômeno com o tamanho da <strong>geratriz (g)</strong>. Se você fosse fabricar uma lata de refrigerante torta com o mesmo volume de uma reta, qual gastaria mais metal?</p>
+        <textarea id="ans2" placeholder="Desenvolva sua resposta aqui..."></textarea>
     </div>
 
     <div class="question-card">
-      <h3>3. Área da superfície e Volume</h3>
-      <div class="action-text">
-        <strong>Ação:</strong> Volte a figura para a forma de sólido 3D (prog = 0) e altere a inclinação.
-      </div>
-      <div class="challenge-text">
-        O que acontece visualmente com os cilindro quando possuí inclinação? O que essa constatação nos ensina sobre volume e área da superfície entre um cilindro reto e um oblíquo?
-      </div>
-      <textarea id="ans3" placeholder="Escreva sua observação aqui..."></textarea>
+        <h3>3. O Rótulo da Embalagem (Planificação)</h3>
+        <div class="action-box"><strong>Ação:</strong> Planifique totalmente as figuras (100%). Observe onde está posicionada a medida da circunferência (<strong>2πr</strong>) no cilindro oblíquo.</div>
+        <p>Se arrancarmos o rótulo de uma lata reta, ele forma um retângulo. Mas no cilindro oblíquo, a medida 2πr do "rótulo" acompanha uma curva ondulada. Por que essa borda precisa obrigatoriamente ser curva para conseguir montar um tubo inclinado?</p>
+        
+        <div style="font-size: 0.9rem; color: #2c5282; background-color: #ebf8ff; padding: 12px; border-radius: 6px; border-left: 4px solid #3182ce; margin-bottom: 15px;">
+            <strong>💡 Dica de Investigação:</strong> Volte o "Desenrolar Superfície" para 0% e gire a câmera para ver a figura de lado. Repare nas bases circulares (as "tampas"): elas ficam inclinadas ou continuam perfeitamente paralelas ao chão horizontal? Se você montasse esse cano torto usando uma folha de papel de <em>bordas retas</em>, as tampas ficariam alinhadas com o chão?
+        </div>
+        
+        <textarea id="ans3" placeholder="Desenvolva sua resposta usando a dica da observação 3D..."></textarea>
     </div>
 
-    <div class="actions-container">
-      <p style="margin-top:0; margin-bottom: 15px; color: var(--secondary-text)">Ao concluir as observações, clique no botão para registrar suas respostas.</p>
-      <button id="btn-enviar" class="btn" onclick="enviarParaDrive()">Enviar Respostas para o Professor</button>
+    <div class="question-card">
+        <h3>4. Otimização de Embalagens (Cilindro Equilátero)</h3>
+        <div class="action-box"><strong>Ação:</strong> Fixe a inclinação em 0°. Imagine que você projeta latas e precisa guardar cerca de <strong>1000 u³ de Volume</strong>. Manipule o Raio (r) e a Altura (h) até chegar próximo a esse volume e observe o valor da <strong>Área Total</strong>.</div>
+        <p>A indústria quer economizar metal. Tente encontrar a <em>menor</em> Área Total possível que ainda comporte os ~1000 u³ (ajuste o raio e a altura em conjunto). Ao encontrar a configuração mais económica, compare o valor da Altura (h) com o do Raio (r). Qual é a relação matemática ideal entre eles para otimizar o custo?</p>
+        <textarea id="ans4" placeholder="Desenvolva sua resposta aqui..."></textarea>
     </div>
-  </div>
 
-  <script>
-    function enviarParaDrive() {
-      const nome = document.getElementById('student-name').value.trim();
-      if (!nome) {
-        alert('Por favor, preencha o seu nome no campo de identificação antes de enviar.');
-        document.getElementById('student-name').focus();
-        return;
-      }
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbyuP61kMQlfH96gO-WauWnEZjqmIeEMm8nRoyrINJvCVqHY3QVgetCw9DgfOuKVts0HLA/exec';
-      const payload = {
-        nome: nome,
-        ans1: document.getElementById('ans1').value,
-        ans2: document.getElementById('ans2').value,
-        ans3: document.getElementById('ans3').value
-      };
-      const btn = document.getElementById('btn-enviar');
-      btn.innerText = 'Enviando relatório...';
-      btn.disabled = true;
-      fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        cache: 'no-cache',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
-        alert('Sucesso! Suas observações foram registradas na planilha do professor.');
-        btn.innerText = 'Observações Enviadas!';
-      })
-      .catch(error => {
-        console.error('Erro', error);
-        alert('Erro de conexão. Tente novamente.');
-        btn.disabled = false;
-        btn.innerText = 'Tentar Enviar Novamente';
-      });
+    <button id="btn-enviar" class="btn-enviar" onclick="enviarDados()">Registrar Minhas Observações</button>
+
+</div>
+
+<script>
+    // --- SETUP 3D ---
+    const container = document.getElementById('canvas-3d');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x121212, 0.002);
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 1, 1000);
+    camera.position.set(0, 80, 240);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const light = new THREE.DirectionalLight(0xffffff, 0.9);
+    light.position.set(50, 150, 100);
+    scene.add(light);
+
+    const grid = new THREE.GridHelper(500, 40, 0x333333, 0x222222);
+    grid.position.y = -60;
+    scene.add(grid);
+
+    // --- GEOMETRIA ---
+    const N = 150; 
+    const planeBase = new THREE.PlaneGeometry(1, 1, N, 1);
+    const origPos = new Float32Array(planeBase.attributes.position.array);
+
+    const meshReto = new THREE.Mesh(planeBase.clone(), new THREE.MeshStandardMaterial({color: 0x4da6ff, side: 2, roughness: 0.3}));
+    const meshObl  = new THREE.Mesh(planeBase.clone(), new THREE.MeshStandardMaterial({color: 0xff6666, side: 2, roughness: 0.3}));
+    const groupReto = new THREE.Group(); groupReto.position.x = -65; scene.add(groupReto); groupReto.add(meshReto);
+    const groupObl  = new THREE.Group(); groupObl.position.x = 65;   scene.add(groupObl);  groupObl.add(meshObl);
+
+    const circle = new THREE.CircleGeometry(1, 64);
+    function makeBase(c) { return new THREE.Mesh(circle, new THREE.MeshStandardMaterial({color: c, side: 2, roughness: 0.5})); }
+    const rt=makeBase(0x2b7bc4), rb=makeBase(0x2b7bc4), ot=makeBase(0xc43b3b), ob=makeBase(0xc43b3b);
+    groupReto.add(rt, rb); groupObl.add(ot, ob);
+
+    // --- COTAS ---
+    const labelsDiv = document.getElementById('labels-container');
+    const cotas = [];
+    class Label {
+        constructor(id, col, isDashed = true) {
+            this.el = document.createElement('div'); this.el.className='cota-label'; this.el.style.color=col;
+            labelsDiv.appendChild(this.el); 
+            
+            const mat = new THREE.LineDashedMaterial({color: col, transparent:true, opacity: 0.8, dashSize: 2, gapSize: 1});
+            this.line = new THREE.Line(new THREE.BufferGeometry(), mat);
+            scene.add(this.line); cotas.push(this);
+        }
+        upd(p1, p2, txt, op) {
+            this.p1=p1; this.p2=p2; this.el.innerHTML = txt; this.el.style.opacity=op; this.line.material.opacity=op;
+            this.line.geometry.setFromPoints([p1, p2]);
+            this.line.computeLineDistances();
+        }
     }
 
-    var parameters = {
-      id: 'ggbApplet',
-      width: 900,
-      height: 600,
-      showMenuBar: false,
-      showAlgebraInput: false,
-      showToolBar: false,
-      customToolBar: '0',
-      showResetIcon: true,
-      enableLabelDrags: false,
-      enableShiftDragZoom: true,
-      enableRightClick: false,
-      useBrowserForJS: false,
-      material_id: 'xmsebxk2',
-      scaleContainerClass: 'geogebra-container',
-      allowUpscale: false
-    };
-    var applet = new GGBApplet(parameters, true);
-    window.onload = function() { applet.inject('ggb-applet'); };
-  </script>
+    class LabelCurve {
+        constructor(col) {
+            this.el = document.createElement('div'); this.el.className='cota-label'; this.el.style.color=col;
+            labelsDiv.appendChild(this.el); 
+            const mat = new THREE.LineDashedMaterial({color: col, transparent:true, opacity: 0.8, dashSize: 2, gapSize: 1});
+            this.line = new THREE.Line(new THREE.BufferGeometry(), mat);
+            scene.add(this.line); cotas.push(this);
+        }
+        upd(pts, midPt, txt, op) {
+            this.p1 = midPt; this.p2 = midPt; // Necessário para a centralização da animação
+            this.el.innerHTML = txt; this.el.style.opacity=op; this.line.material.opacity=op;
+            this.line.geometry.setFromPoints(pts);
+            this.line.computeLineDistances();
+        }
+    }
+
+    const cRetoH = new Label('h_r', '#99ccff'), cRetoPeri = new Label('p_r', '#99ccff');
+    const cOblG = new Label('g_o', '#ff9999'), cOblH = new Label('h_o', '#ffff00'), cOblPeri = new Label('p_o', '#ffaaaa');
+    const cOblCurva = new LabelCurve('#ff9999');
+
+    // --- LOGICA MATEMATICA ---
+    let X_arr = new Float32Array(N + 1);
+    function getP(u_rat, v_rat, R, H, beta, prog, isObl, L_w) {
+        let p = prog/100, A = u_rat*Math.PI*2, g = isObl?H/Math.cos(beta):H, v = v_rat*g;
+        let x3 = isObl?(R*Math.cos(A)+v*Math.sin(beta)):R*Math.cos(A), y3 = isObl?(v*Math.cos(beta)-H/2):v-H/2, z3 = -R*Math.sin(A);
+        let x2, y2;
+        if(isObl) {
+            let i = Math.floor(u_rat*N), fr = (u_rat*N)-i;
+            let xu = (i>=N)?X_arr[N]:X_arr[i]*(1-fr)+X_arr[i+1]*fr;
+            x2 = xu - L_w/2; y2 = v + R * Math.cos(A) * Math.sin(beta) - g/2;
+        } else { x2 = R*A - Math.PI*R; y2 = v - H/2; }
+        return new THREE.Vector3(x3*(1-p)+x2*p, y3*(1-p)+y2*p, z3*(1-p)+R*p);
+    }
+
+    function update() {
+        const R = parseFloat(document.getElementById('range-r').value);
+        const H = parseFloat(document.getElementById('range-h').value);
+        const B = parseFloat(document.getElementById('range-ang').value)*Math.PI/180;
+        const P = parseFloat(document.getElementById('range-prog').value);
+        const p = P/100;
+        
+        document.getElementById('ui-r').innerText=R; document.getElementById('ui-h').innerText=H;
+        document.getElementById('ui-ang').innerText=document.getElementById('range-ang').value+'°';
+        document.getElementById('ui-prog').innerText=P+'%';
+
+        // Integral Elíptica
+        X_arr[0]=0; for(let i=1;i<=N;i++){
+            let phi=(i-0.5)*(Math.PI*2/N);
+            X_arr[i]=X_arr[i-1] + R*Math.sqrt(1-Math.pow(Math.sin(B)*Math.sin(phi),2))*(Math.PI*2/N);
+        }
+        const Lw = X_arr[N], Lr = Math.PI*2*R, g=H/Math.cos(B);
+
+        // Meshes
+        [meshReto, meshObl].forEach((m, idx)=>{
+            const pos = m.geometry.attributes.position; const isO = idx===1;
+            for(let i=0; i<pos.count; i++) {
+                let v = getP(origPos[i*3]+0.5, origPos[i*3+1]+0.5, R, H, isO?B:0, P, isO, isO?Lw:Lr);
+                pos.setXYZ(i, v.x, v.y, v.z);
+            }
+            pos.needsUpdate=true; m.geometry.computeVertexNormals();
+        });
+
+        // Bases
+        function upB(mesh, top, isO, L_width) {
+            let pos3d = new THREE.Vector3(isO ? (top?H*Math.tan(B):0) : 0, top?H/2:-H/2, 0);
+            let p2d_x = isO ? (top ? -L_width/2 : 0) : 0;
+            let p2d_y = top ? (g/2 + R*Math.sin(B) + R) : (-g/2 - R*Math.sin(B) - R);
+            if (!isO) p2d_y = top ? (H/2 + R) : (-H/2 - R);
+
+            let pos2d = new THREE.Vector3(p2d_x, p2d_y, R);
+            mesh.position.copy(pos3d).lerp(pos2d, p);
+            let q3d = new THREE.Quaternion().setFromEuler(new THREE.Euler(top?-Math.PI/2:Math.PI/2, 0, 0));
+            mesh.quaternion.copy(q3d).slerp(new THREE.Quaternion(), p);
+            mesh.scale.set(R, R, 1);
+        }
+        upB(rt,1,0,Lr); upB(rb,0,0,Lr); upB(ot,1,1,Lw); upB(ob,0,1,Lw);
+
+        // Painel
+        let Ab = Math.PI*R*R, V = Ab*H;
+        let Al_reto = Lr*H, At_reto = 2*Ab + Al_reto;
+        let Al_obl = Lw*g, At_obl = 2*Ab + Al_obl;
+
+        document.getElementById('val-reto-ab').innerText = Ab.toFixed(1);
+        document.getElementById('val-reto-al').innerText = Al_reto.toFixed(1);
+        document.getElementById('val-reto-at').innerText = At_reto.toFixed(1);
+        document.getElementById('val-reto-v').innerText  = V.toFixed(1);
+        
+        document.getElementById('val-obl-ab').innerText  = Ab.toFixed(1);
+        document.getElementById('val-obl-al').innerText  = Al_obl.toFixed(1);
+        document.getElementById('val-obl-at').innerText  = At_obl.toFixed(1);
+        document.getElementById('val-obl-v').innerText   = V.toFixed(1);
+
+        // Cotas
+        scene.updateMatrixWorld(true);
+        
+        // Reto H
+        let pr1 = getP(0,0,R,H,0,P,0,Lr).add(groupReto.position).add(new THREE.Vector3(-8 - 5*p,0,0));
+        let pr2 = getP(0,1,R,H,0,P,0,Lr).add(groupReto.position).add(new THREE.Vector3(-8 - 5*p,0,0));
+        cRetoH.upd(pr1, pr2, `h = ${H}`, 1);
+
+        // Reto Peri
+        let prp1 = new THREE.Vector3(-Lr/2, -H/2-25, R).add(groupReto.position);
+        let prp2 = new THREE.Vector3(Lr/2, -H/2-25, R).add(groupReto.position);
+        cRetoPeri.upd(prp1, prp2, `2&pi;r = ${Lr.toFixed(1)}`, p > 0.5 ? 1 : 0);
+
+        // Oblíquo G
+        let po1 = getP(0,0,R,H,B,P,1,Lw).add(groupObl.position).add(new THREE.Vector3(-10 - 5*p,0,0));
+        let po2 = getP(0,1,R,H,B,P,1,Lw).add(groupObl.position).add(new THREE.Vector3(-10 - 5*p,0,0));
+        cOblG.upd(po1, po2, `g = ${g.toFixed(1)}`, 1);
+
+        // Oblíquo H (Fix de Deslocamento)
+        let po_h_offset = Math.max(35, R + H * Math.tan(B) + 15);
+        let poh1 = new THREE.Vector3(po_h_offset, H/2, 0).applyMatrix4(groupObl.matrixWorld);
+        let poh2 = new THREE.Vector3(po_h_offset, -H/2, 0).applyMatrix4(groupObl.matrixWorld);
+        cOblH.upd(poh1, poh2, `h = ${H}`, 1-p);
+
+        // Oblíquo Curva 2πr
+        const curvePts = [];
+        for(let i=0; i<=50; i++) {
+            curvePts.push( getP(i/50, 0, R, H, B, P, 1, Lw).add(groupObl.position).add(new THREE.Vector3(0, -10, 0)) ); 
+        }
+        cOblCurva.upd(curvePts, curvePts[25], `Curva (2&pi;r) = ${Lr.toFixed(1)}`, p > 0.5 ? 1 : 0);
+
+        // Oblíquo Peri (Largura Achatada)
+        let pop1 = getP(0,0.5,R,H,B,P,1,Lw).add(groupObl.position).add(new THREE.Vector3(0, 12, 0));
+        let pop2 = getP(1,0.5,R,H,B,P,1,Lw).add(groupObl.position).add(new THREE.Vector3(0, 12, 0));
+        cOblPeri.upd(pop1, pop2, `Largura achatada = ${Lw.toFixed(1)}`, p > 0.8 ? 1 : 0);
+    }
+
+    function enviarDados() {
+        const nome = document.getElementById('student-name').value.trim();
+        if(!nome) { alert('Identifique-se primeiro!'); return; }
+        const btn = document.getElementById('btn-enviar');
+        btn.innerText = 'A enviar...'; btn.disabled = true;
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyuP61kMQlfH96gO-WauWnEZjqmIeEMm8nRoyrINJvCVqHY3QVgetCw9DgfOuKVts0HLA/exec';
+        const data = { nome: nome, ans1: document.getElementById('ans1').value, ans2: document.getElementById('ans2').value, ans3: document.getElementById('ans3').value, ans4: document.getElementById('ans4').value };
+        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
+        .then(() => { alert('Sucesso! Respostas registadas.'); btn.innerText = 'Enviado!'; })
+        .catch(() => { alert('Erro.'); btn.disabled = false; });
+    }
+
+    function animate() {
+        requestAnimationFrame(animate); controls.update();
+        cotas.forEach(c => {
+            let mid = c.p1.clone().lerp(c.p2, 0.5); mid.project(camera);
+            c.el.style.left = `${(mid.x*0.5+0.5)*container.clientWidth}px`;
+            c.el.style.top = `${(mid.y*-0.5+0.5)*container.clientHeight}px`;
+        });
+        renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight; camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    document.querySelectorAll('input').forEach(i => i.addEventListener('input', update));
+    update(); animate();
+</script>
 </body>
 </html>
